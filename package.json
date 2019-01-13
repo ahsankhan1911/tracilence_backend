@@ -1,0 +1,40 @@
+{
+  "name": "tracilence_backend",
+  "version": "1.0.0",
+  "description": "Backend for Tracilence App",
+  "main": "\\",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahsankhan1911/tracilence_backend.git"
+  },
+  "keywords": [
+    "tracking",
+    "mobile",
+    "app"
+  ],
+  "author": "Ahsan Khan Saad Khan",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "body-parser": "^1.17.1",
+    "compression": "^1.7.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.2",
+    "mongoose": "^4.13.10",
+    "path": "^0.12.7",
+    "randomstring": "^1.1.5"
+  },
+  "bugs": {
+    "url": "https://github.com/ahsankhan1911/tracilence_backend/issues"
+  },
+  "homepage": "https://github.com/ahsankhan1911/tracilence_backend#readme",
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
