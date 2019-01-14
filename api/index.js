@@ -1,9 +1,11 @@
-var express = require('express');
-var app = express();
-var router = express.Router();
-var controller = require('./controller');
-var multer = require('multer');
+const trackerRouter = require('./tracker')
+const responseHandler = require('../lib/responseHandler')
 
 
+module.exports = function(app){
+	app.use('/api/tracker', trackerRouter);
 
-module.exports = router;
+
+	// Attach ErrorHandler to Handle All Errors
+	app.use(responseHandler.handleError);
+}

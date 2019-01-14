@@ -2,11 +2,11 @@
   "name": "tracilence_backend",
   "version": "1.0.0",
   "description": "Backend for Tracilence App",
-  "main": "\\",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -22,13 +22,17 @@
   "dependencies": {
     "axios": "^0.17.1",
     "body-parser": "^1.17.1",
+    "bunyan": "^1.8.12",
+    "bunyan-debug-stream": "^2.0.0",
     "compression": "^1.7.1",
     "cookie-parser": "^1.4.3",
     "dotenv": "^4.0.0",
     "express": "^4.15.2",
+    "lodash": "^4.17.11",
     "mongoose": "^4.13.10",
     "path": "^0.12.7",
-    "randomstring": "^1.1.5"
+    "randomstring": "^1.1.5",
+    "socket.io": "^2.2.0"
   },
   "bugs": {
     "url": "https://github.com/ahsankhan1911/tracilence_backend/issues"
