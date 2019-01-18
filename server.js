@@ -28,49 +28,42 @@ mongoose.connect(`mongodb://localhost/tracilenceDB`, {
 });
 
 
-socketServer.server.listen(8000, () => {
-console.log("Socket connected")
+// socketServer.server.listen(8000, () => {
+// console.log("Socket connected")
 
-})
+// })
 
-socketServer.io.on('connection', (socket) => {
+// socketServer.io.on('connection', (socket) => {
   
  
-  // socket.emit
-  console.log("CONNECTION ESTABLISHEDD" , socket.id)
+//   // socket.emit
+//   console.log("CONNECTION ESTABLISHEDD" , socket.id)
 
-  socket.on('test', (message) => {
+//   socket.on('test', (message) => {
 
-    console.log("Client message   ", message)
-  })
+//     console.log("Client message   ", message)
+//   })
 
+// })
+
+// app.get('/real-time', (req, res) => {
+//   var center = {
+//     lat: 59.95,
+//       lng: 30.33
+//   }
   
- 
-   
-    
+//   setInterval(() => {
+//     center.lat+=0.001
+//     center.lng-=0.001
+//     socketServer.io.emit('test', center)
 
-  
-
-})
-
-app.get('/real-time', (req, res) => {
-  var center = {
-    lat: 59.95,
-      lng: 30.33
-  }
-  
-  setInterval(() => {
-    center.lat+=0.001
-    center.lng-=0.001
-    socketServer.io.emit('test', center)
-
-  },1000)
+//   },1000)
 
   
 
-res.send("REAL TIME ACTIVATED")
+// res.send("REAL TIME ACTIVATED")
 
-  })
+//   })
 
 require('./api')(app)
 
