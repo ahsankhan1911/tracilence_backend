@@ -1,15 +1,16 @@
 var express = require('express');
-var controller = require('./userController');
+const controller = require('./userController');
+const userMiddleware = require('./userMiddleware') 
 // var multer = require('multer');
 
-const trackerRouter = express.Router();
+const userRouter = express.Router();
 
 
-trackerRouter.route('/signup').post(controller.userSignup)
-trackerRouter.route('/login').post(controller.userLogin)
-trackerRouter.route('/details/:_id').post(controller.userDetails)
-trackerRouter.route('/edit-profile/:_id').post(controller.userEditProfile)
+userRouter.route('/signup').post( [userMiddleware.validateSignUp], controller.userSignup)
+userRouter.route('/login').post(controller.userLogin)
+userRouter.route('/details/:_id').get([userMiddleware.authenticateUserAccesstoken], controller.userDetails)
+userRouter.route('/edit-profile/:_id').post([userMiddleware.authenticateUserAccesstoken], controller.userEditProfile)
 
 
 
-module.exports = trackerRouter
+module.exports = userRouter
