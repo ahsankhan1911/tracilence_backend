@@ -32,7 +32,7 @@ exports.userLogin = (request, response) => {
 exports.userDetails = (request, response) => {
     let { _id } = request.params
     userDoa.userDetails({ _id }).then((result) => {
-        responseHandler.sendSuccess(response, { responceMessage: result })
+        responseHandler.sendSuccess(response, result)
     }).catch((error) => {
         responseHandler.sendError(response, error)
     })
@@ -46,7 +46,7 @@ exports.userEditProfile = (request, response) => {
    let profilePicture = `/images/users/${file.filename}` 
 
     userDoa.userEditProfile({_id, name,profilePicture,age,phone}).then((result) => {
-        responseHandler.sendSuccess(response, {responceMessage: "user updated successfully !", user : result})
+        responseHandler.sendSuccess(response, {message: "user updated successfully !", user : result})
     })
     
 } 

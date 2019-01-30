@@ -28,6 +28,7 @@ mongoose.connect(`mongodb://localhost/tracilenceDB`, {
 
 mongoose.Promise = global.Promise;
 
+console.log("NODE ENV >>>>>>>> ",process.env.NODE_ENV)
 
 socketServer.server.listen(8000, () => {
 console.log("Socket connected")
