@@ -2,20 +2,34 @@
 const appUtils = require('../../lib/appUtils'),
       _ = require('lodash'),
       userDao = require('./userDao'),
-      customException = require('../../lib/customException')
-      constant = require('../../lib/constant')
+      customException = require('../../lib/customException'),
+	  constant = require('../../lib/constant'),
+	  multer  = require('multer'),
+	  storage = multer.diskStorage({
+		  
+		destination: function (req, file, cb) {
+		  cb(null, 'client/public/images/users')
+		},
+		filename: function (req, file, cb) {
+			console.log(file)
+			//  let date = new Date()
+			 let extension = file.mimetype.replace('image/', '')
+			 let name = req.body.name.replace(' ', '') + '-' + new Date() + '.' + extension
+			// console.log(file.s)
+		  cb(null, name)
+		}
+	  }),
+	  upload = multer({ storage: storage });
+	  
+
+
+var uploadUserProfilePicture =   upload.single('userProfilePicture')
+
 
 var validateSignUp = function(request, response, next){
-	let {name, email, password} = request.body;
+	let {name, email, password,gender} = request.body;
 	var errors = [];
-
-	userDao.checkIfEmailExist({email}).then((result) => {
-		if(result) {
-			errors.push({fieldName:'email', message:"A user already exist with this email"});
-		}
-	}).catch((error) => {
-		throw error
-	})
+    var genders = ['male', 'female','other']
 
 	if(_.isEmpty(name)){
 		errors.push({fieldName:'name', message:"Please enter your name"});
@@ -29,6 +43,10 @@ var validateSignUp = function(request, response, next){
     }
 	if(_.isEmpty(password)){
 		errors.push({fieldName:'password', message:"Please enter your password"});
+	}
+
+	if(!genders.find((gen) => gen === gender)){
+		errors.push({fieldName:'gender', message:"Gender can't be other than male,female and other"});
 	}
 	
 	if(errors && errors.length > 0){
@@ -61,5 +79,6 @@ var validationError = function(errors, next){
 
 module.exports = {
 	validateSignUp,
-	authenticateUserAccesstoken
+	authenticateUserAccesstoken,
+	uploadUserProfilePicture
 }

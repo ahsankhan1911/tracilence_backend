@@ -14,7 +14,6 @@ var mongoose = require('mongoose');
 // const ViModel = require('./api/model');
 var PORT = process.env.PORT || 5000
 const socketServer = require('./lib/socketIO/index')
-var socketIO;
 // const Content = mongoose.model('Content');
 
 mongoose.connect(`mongodb://localhost/tracilenceDB`, {
@@ -29,6 +28,7 @@ mongoose.connect(`mongodb://localhost/tracilenceDB`, {
 
 mongoose.Promise = global.Promise;
 
+console.log("NODE ENV >>>>>>>> ",process.env.NODE_ENV)
 
 socketServer.server.listen(8000, () => {
 console.log("Socket connected")
@@ -48,6 +48,45 @@ socketServer.io.on('connection', (socket) => {
 
 })
 
+//Disable x-powered-by response header for appilcation security purpose
+app.disable('x-powered-by');
+
+
+
+//serving static files according to environment
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static('./client/build'))
+}
+else {
+  app.use(express.static('./client/public'))
+}
+
+//CORS congif
+app.use(function(req, res, next){
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+  next();
+});
+
+//body parser middleware
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({
+  extended: true
+})); // support encoded bodies
+
+
+//API urls binded
+require('./api')(app)
+
+
+app.use(compression());
+
+
+
+
+//REAL TIME ROUTE
 app.get('/real-time', (req, res) => {
   var center = {
     lat: 59.95,
@@ -64,28 +103,6 @@ app.get('/real-time', (req, res) => {
    res.send("REAL TIME ACTIVATED")
 
 })
-
-//CORS congif
-app.use(function(req, res, next){
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
-  next();
-});-
-
-//body parser middleware
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({
-  extended: true
-})); // support encoded bodies
-
-
-//API urls binded
-require('./api')(app)
-
-
-app.use(compression());
 
 // app.use(function (err, req, res, next) {
 //   res.status(err.status || 500);

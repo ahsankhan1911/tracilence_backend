@@ -4,17 +4,11 @@ const responseHandler = require('../../lib/responseHandler');
 const userDoa = require('./userDao')
 
 
-
-// exports.testApi = (request, response) => {
-// responseHandler.sendSuccess(response, {message: "Testing successfully"})
-// }
-
-
 exports.userSignup = (request, response) => {
-    let { name, email, password } = request.body
+    let { name, email, password ,gender} = request.body
 
-    userDoa.createUser({name ,email ,password}).then((result) => {
-        responseHandler.sendSuccess(response, { responceMessage: "Signup successfully", userId: result._id , accessToken: result.accessToken})
+    userDoa.createUser({name ,email ,password,gender}).then((result) => {
+        responseHandler.sendSuccess(response, { responceMessage: "Signup successfully", userId: result.user._id , accessToken: result.accessToken})
     }).catch((error) => {
 
         responseHandler.sendError(response, error)
@@ -35,10 +29,24 @@ exports.userLogin = (request, response) => {
        
   }   
 
-  exports.userDetails = (request, response) => {
-    responseHandler.sendSuccess(response, {responceMessage: "this is details"})
+exports.userDetails = (request, response) => {
+    let { _id } = request.params
+    userDoa.userDetails({ _id }).then((result) => {
+        responseHandler.sendSuccess(response, result)
+    }).catch((error) => {
+        responseHandler.sendError(response, error)
+    })
+
 } 
 
 exports.userEditProfile = (request, response) => {
-    responseHandler.sendSuccess(response, {responceMessage: "this is edit profile"})
+    let {name, age, phone} = request.body
+    let {_id }= request.params 
+    let  file = request.file
+   let profilePicture = `/images/users/${file.filename}` 
+
+    userDoa.userEditProfile({_id, name,profilePicture,age,phone}).then((result) => {
+        responseHandler.sendSuccess(response, {message: "user updated successfully !", user : result})
+    })
+    
 } 
