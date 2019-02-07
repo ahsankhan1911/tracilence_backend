@@ -15,6 +15,10 @@ var mongoose = require('mongoose');
 var PORT = process.env.PORT || 5000
 const socketServer = require('./lib/socketIO/index')
 // const Content = mongoose.model('Content');
+console.log("Tracilence app starting on",process.env.NODE_ENV, 'environment')
+console.log()
+
+
 
 mongoose.connect(`mongodb://localhost/tracilenceDB`, {
   useMongoClient: true
@@ -26,9 +30,15 @@ mongoose.connect(`mongodb://localhost/tracilenceDB`, {
   }
 });
 
-mongoose.Promise = global.Promise;
+mongoose.connection.on('disconnected', (message) =>{
+      console.log("MongoDB is disconnected",message)
+})
 
-console.log("NODE ENV >>>>>>>> ",process.env.NODE_ENV)
+mongoose.connection.on('error', function(err){
+      throw new Error(err.message)
+});
+
+mongoose.Promise = global.Promise;
 
 socketServer.server.listen(8000, () => {
 console.log("Socket connected")
