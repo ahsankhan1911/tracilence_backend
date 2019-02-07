@@ -12,8 +12,8 @@ class App extends Component {
     super(props);
     this.state = {
       center: {
-        lat: 59.99,
-        lng: 30.33
+        lat: 24.866982099999998,
+        lng: 67.0528818
       },
       zoom: 11
     }
