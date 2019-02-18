@@ -20,6 +20,9 @@ console.log()
 
 
 
+/**
+ * MongoDB Config
+ */
 mongoose.connect(`mongodb://localhost/tracilenceDB`, {
   useMongoClient: true
 }, function (err) {
@@ -40,6 +43,15 @@ mongoose.connection.on('error', function(err){
 
 mongoose.Promise = global.Promise;
 
+/**
+ * MongoDB Config End
+ */
+
+
+
+/**
+ * Socket.io 
+ */
 socketServer.server.listen(8000, () => {
 console.log("Socket connected")
 
@@ -47,8 +59,6 @@ console.log("Socket connected")
 
 socketServer.io.on('connection', (socket) => {
   
- 
-  // socket.emit
   console.log("CONNECTION ESTABLISHEDD" , socket.id)
 
   socket.on('test', (message) => {
@@ -57,23 +67,32 @@ socketServer.io.on('connection', (socket) => {
   })
 
 })
+/**
+ * Socket.io 
+ */
+
+ 
 
 //Disable x-powered-by response header for appilcation security purpose
 app.disable('x-powered-by');
 
+//Compressing static resources
+app.use(compression());
 
 
-//serving static files according to environment
+//Serving images always from public folder
+app.use('/images',express.static('./client/public/images'))
+
+
+//serving static files js/css only when environment is production otherwise will be dealed with Webpack-Dev-Server
 if(process.env.NODE_ENV === 'production') {
   app.use(express.static('./client/build'))
 }
-else {
-  app.use(express.static('./client/public'))
-}
+
 
 //CORS congif
 app.use(function(req, res, next){
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "");
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
@@ -91,8 +110,9 @@ app.use(bodyParser.urlencoded({
 require('./api')(app)
 
 
-app.use(compression());
-
+// app.post('/test', (req, res) => {
+//   res.end()
+// })
 
 
 

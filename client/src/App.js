@@ -19,7 +19,14 @@ class App extends Component {
     }
    
 
-    
+socket.on('connect', (info) => {
+  console.log("Connected to Soket Server",  info)
+})
+
+socket.on('disconnect', (info) => {
+  console.error("Socket Connection Lost",  info)
+})
+
 socket.on('test', (message) => {
   console.log("SERVER MESSAGE" , message)
    this.setState({
@@ -27,6 +34,14 @@ socket.on('test', (message) => {
    })
      
   
+})
+
+socket.on('location', (location) => {
+  console.log(location)
+   this.setState({
+     center : location
+   })
+     
 })
 
 
