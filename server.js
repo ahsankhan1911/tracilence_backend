@@ -23,16 +23,15 @@ console.log()
 /**
  * MongoDB Config
  */
-mongoose.connect(`mongodb://localhost/tracilenceDB`, {
-  useMongoClient: true
-}, function (err) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("MongoDB is now Connected")
-  }
-});
 
+mongoose.set('debug', true);
+
+mongoose.connect(`mongodb://localhost/tracilenceDB`, {useMongoClient: true});
+
+mongoose.connection.on('connected', (data) => {
+  console.log("MongoDB is now Connected")
+    console.log()
+})
 mongoose.connection.on('disconnected', (message) =>{
       console.log("MongoDB is disconnected",message)
 })
