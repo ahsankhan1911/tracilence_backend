@@ -51,7 +51,7 @@ var userLogin = (userData) => {
 }
 
 var createUser = (userData) => {
-    checkIfEmailExist(userData).then((result) => {
+  return checkIfEmailExist(userData).then((result) => {
        if(result) {
         throw new Exception(1, "User already exist with this email");
        }
