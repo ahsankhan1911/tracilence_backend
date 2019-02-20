@@ -8,7 +8,7 @@ exports.userSignup = (request, response) => {
     let { name, email, password ,gender} = request.body
 
     userDoa.createUser({name ,email ,password,gender}).then((result) => {
-        responseHandler.sendSuccess(response, { responceMessage: "Signup successfully", userId: result.user._id , accessToken: result.accessToken})
+        responseHandler.sendSuccess(response, { responceMessage: "Signup successfully", userId: result._id , accessToken: result.accessToken})
     }).catch((error) => {
 
         responseHandler.sendError(response, error)
