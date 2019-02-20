@@ -5,7 +5,7 @@ customException = require('../../lib/customException'),
 constant = require('../../lib/constant');
 
 
-var validateAddPoint = function ( request, response) {
+var validateAddPoint = function ( request, response,next) {
   let {pointName, pointNumberPlate, latitude , longitude} = request.body;
 	var errors = [];
 

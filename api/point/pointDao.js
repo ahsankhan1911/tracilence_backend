@@ -4,7 +4,6 @@ const Point = require('./pointModel'),
 
 
 function addPoint (pointData) {
-    pointData.pointLocation.coordinates =[pointData.latitute, pointData.longitude] 
         return Point.create(pointData);
 }
 
@@ -14,11 +13,11 @@ function addPoint (pointData) {
  * @returns Promise
  * @description Provides the nearest point according to user's location provided in latitude and longitude
  */
-function getNearestPoint(latitute, longitude) {
+function getNearestPoint(latitude, longitude) {
     let aggPipe = []
 
     let geoNear = { 
-        near: { type: "Point", coordinates: [ latitute , longitude ] },
+        near: { type: "Point", coordinates: [ latitude , longitude ] },
         distanceField: "distance",
         spherical: true
     }
@@ -35,8 +34,14 @@ function getNearestPoint(latitute, longitude) {
      return Point.aggregate(aggPipe)
 }
 
+function updatePointLocation(pointData) {
+    let set = { "pointLocation.coordinates": [pointData.latitude, pointData.longitude]}
+    let update = { '$set': set}
+    return Point.findByIdAndUpdate(pointData.pointId,update )
+}
 
 module.exports = {
     addPoint,
-    getNearestPoint
+    getNearestPoint,
+    updatePointLocation
 }
