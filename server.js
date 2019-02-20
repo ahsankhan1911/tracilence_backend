@@ -84,9 +84,9 @@ app.use('/images',express.static('./client/public/images'))
 
 
 //serving static files js/css only when environment is production otherwise will be dealed with Webpack-Dev-Server
-if(process.env.NODE_ENV === 'production') {
-  app.use(express.static('./client/build'))
-}
+// if(process.env.NODE_ENV === 'production') {
+//   app.use(express.static('./client/build'))
+// }
 
 
 //CORS congif
@@ -113,7 +113,9 @@ require('./api')(app)
 //   res.end()
 // })
 
-
+app.get('/', (req, res) => {
+  res.send("WELCOME TO TRACILENCE APP")
+})
 
 //REAL TIME ROUTE
 app.get('/real-time', (req, res) => {
