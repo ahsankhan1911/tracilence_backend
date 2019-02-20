@@ -26,19 +26,27 @@ console.log()
 
 mongoose.set('debug', true);
 
-mongoose.connect(`mongodb://localhost/tracilenceDB`, {useMongoClient: true});
+mongoose.connect("mongodb://admin:admin2333@ds237955.mlab.com:37955/tracilence_app", {useMongoClient: true}, (err) => {
 
-mongoose.connection.on('connected', (data) => {
-  console.log("MongoDB is now Connected")
-    console.log()
-})
-mongoose.connection.on('disconnected', (message) =>{
-      console.log("MongoDB is disconnected",message)
-})
-
-mongoose.connection.on('error', function(err){
-      throw new Error(err.message)
+ if(err) {
+   throw new Error(err)
+ }
+ else {
+   console.log("Connected to MLab")
+ }
 });
+
+// mongoose.connection.on('connected', (data) => {
+//   console.log("MongoDB is now Connected")
+//     console.log()
+// })
+// mongoose.connection.on('disconnected', (message) =>{
+//       console.log("MongoDB is disconnected",message)
+// })
+
+// mongoose.connection.on('error', function(err){
+//       throw new Error(err.message)
+// });
 
 mongoose.Promise = global.Promise;
 
