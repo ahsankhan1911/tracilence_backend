@@ -56,6 +56,7 @@ var validateSignUp = function(request, response, next){
 }
 
 var authenticateUserAccesstoken = (request, response,next) => {
+	console.log("CAME AT MIDDLEWARE")
    let {accessToken} = request.query
    userDao.authenticateUserAccesstoken({accessToken}).then((result) => {
 	   if(result) {
@@ -63,6 +64,7 @@ var authenticateUserAccesstoken = (request, response,next) => {
 	   }
 
 	else {
+		response.status(403)
 		return next(customException.customErrorException(constant.MESSAGES.ACCESS_FORBIDDEN, null));
 	   }
    })
