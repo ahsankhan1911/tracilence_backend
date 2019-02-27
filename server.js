@@ -6,6 +6,7 @@ require('dotenv').load({
   silent: true
 });
 
+
 var express = require('express');
 var compression = require('compression');
 var bodyParser = require('body-parser');
@@ -18,37 +19,33 @@ const socketServer = require('./lib/socketIO/index')
 console.log("Tracilence app starting on",process.env.NODE_ENV, 'environment')
 console.log()
 
-
-
+console.log(process.env)
 /**
  * MongoDB Config
  */
 
 mongoose.set('debug', true);
 
-mongoose.connect("mongodb://admin:admin2333@ds237955.mlab.com:37955/tracilence_app", {useMongoClient: true}, (err) => {
+mongoose.connect("mongodb://localhost:27017", {useMongoClient: true}, (err) => {
 
  if(err) {
    throw new Error(err)
  }
  else {
-   console.log("Connected to MLab")
+   console.log("Connected to MongoDB")
  }
 });
 
-// mongoose.connection.on('connected', (data) => {
-//   console.log("MongoDB is now Connected")
-//     console.log()
-// })
-// mongoose.connection.on('disconnected', (message) =>{
-//       console.log("MongoDB is disconnected",message)
-// })
 
-// mongoose.connection.on('error', function(err){
-//       throw new Error(err.message)
-// });
+mongoose.connection.on('disconnected', (message) =>{
+      console.log("MongoDB is disconnected",message)
+})
 
-mongoose.Promise = global.Promise;
+mongoose.connection.on('error', (err) =>{
+      throw new Error(err.message)
+});
+
+mongoose.Promise = require('bluebird')
 
 /**
  * MongoDB Config End
@@ -98,7 +95,7 @@ app.use('/images',express.static('./client/public/images'))
 
 
 //CORS congif
-app.use(function(req, res, next){
+app.use((req, res, next) =>{
   res.header("Access-Control-Allow-Origin", "");
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -148,6 +145,6 @@ app.get('/real-time', (req, res) => {
 //   res.send("Error: " + err.message);
 // });
 
-app.listen(PORT, function () {
+app.listen(PORT,  () => {
   console.log('Running server on ' + PORT);
 });
