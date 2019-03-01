@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import io from 'socket.io-client';
 import GoogleMapReact from 'google-map-react';
-const socket = io.connect('http://localhost:8000');
+const socket = io.connect('http://3.1.167.51:8000');
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
