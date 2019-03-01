@@ -2,30 +2,16 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var GeoSchema = new Schema({
-  _id:false,
-  type:{type:String, default:'Point'},
-  coordinates:{type:[Number], index:'2dsphere'}
-});
 
-var PointSchema = new Schema({
-  pointName: { type: String, required: true },
-  pointNumberPlate: { type: String, required: true },
-  pointLocation : GeoSchema,
-  pointTrackedByUsers :[{
-    _id:false,
-    userId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User'
-    },
-    dateOfTrack:{type:Number},
-}]
-  
+var AdminSchema = new Schema({
+    username : {type: String, unique: true, required: true},
+    password: {type : String, required: true},
+    role : {type : String , enum: ['Administrator', 'Moderator'], required:true}
 },{
   versionKey:false,
   timestamps:true
 });
 
 
-module.exports = mongoose.model('Point', PointSchema);
+module.exports = mongoose.model('Admin', AdminSchema);
 

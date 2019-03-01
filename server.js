@@ -19,14 +19,13 @@ const socketServer = require('./lib/socketIO/index')
 console.log("Tracilence app starting on",process.env.NODE_ENV, 'environment')
 console.log()
 
-console.log(process.env)
 /**
  * MongoDB Config
  */
-
+mongoose.Promise = require('bluebird')
 mongoose.set('debug', true);
 
-mongoose.connect("mongodb://localhost:27017", {useMongoClient: true}, (err) => {
+mongoose.connect("mongodb://localhost:27017/tracilenceDB", {useMongoClient: true}, (err) => {
 
  if(err) {
    throw new Error(err)
@@ -45,7 +44,7 @@ mongoose.connection.on('error', (err) =>{
       throw new Error(err.message)
 });
 
-mongoose.Promise = require('bluebird')
+
 
 /**
  * MongoDB Config End
