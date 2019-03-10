@@ -1,14 +1,13 @@
 var express = require('express');
 const controller = require('./adminController');
-const pointMiddleware = require('./adminMiddleware') 
+const adminMiddleware = require('./adminMiddleware') 
 const userMiddleware = require('../user/userMiddleware')
 
-const pointRouter = express.Router();
+const adminRouter = express.Router();
 
-pointRouter.route('/add').post([pointMiddleware.validateAddPoint], controller.addPoint)
+adminRouter.route('/login').post([adminMiddleware.validateAdminLogin], controller.adminLogin)
+// adminRouter.route('/point/list').get([adminMiddleware.authenticateAdminToken], controller.getPoints);
+// adminRouter.route('/user/list').get([adminMiddleware.authenticateAdminToken], controller.getUsers)
 
-pointRouter.route('/location').post( controller.receivePointLocation)
-pointRouter.route('/get').get([userMiddleware.authenticateUserAccesstoken], controller.getNearestPoint)
 
-
-module.exports = pointRouter
+module.exports = adminRouter

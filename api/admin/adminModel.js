@@ -6,7 +6,8 @@ var Schema = mongoose.Schema;
 var AdminSchema = new Schema({
     username : {type: String, unique: true, required: true},
     password: {type : String, required: true},
-    role : {type : String , enum: ['Administrator', 'Moderator'], required:true}
+    role : {type : String , enum: ['Administrator', 'Moderator'], required:true},
+    isActive: {type: Boolean, default: true}
 },{
   versionKey:false,
   timestamps:true

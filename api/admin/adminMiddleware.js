@@ -2,31 +2,35 @@
 const appUtils = require('../../lib/appUtils'),
 _ = require('lodash'),
 customException = require('../../lib/customException'),
-constant = require('../../lib/constant');
+constant = require('../../lib/constant'),
+jwtHandler = require('../../lib/jwt');
 
 
-var validateAddPoint = function ( request, response,next) {
-  let {pointName, pointNumberPlate, latitude , longitude} = request.body;
-	var errors = [];
 
-	if(_.isEmpty(pointName)){
-		errors.push({fieldName:'pointName', message:"Please enter point name"});
-  }
-  
-  if(_.isEmpty(pointNumberPlate)){
-		errors.push({fieldName:'pointNumberPlate', message:"Please enter point number plate"});
-  }
-  if(_.isEmpty(latitude)){
-		errors.push({fieldName:'latitude', message:"Please enter latitude"});
-	}
-  
-  if(_.isEmpty(longitude)){
-		errors.push({fieldName:'longitude', message:"Please enter longitude"});
-	}
-	if(errors && errors.length > 0){
-		validationError(errors, next);
-	}
-	next();
+var validateAdminLogin = function (request, response,next) {
+			let {username, password} = request.body
+			var errors = [];
+			
+			if(_.isEmpty(username)) {
+				errors.push({fieldName:'username', message:"Please enter username"});
+			}
+
+			if(_.isEmpty(password)) {
+				errors.push({fieldName:'password', message:"Please enter password"});
+			}
+
+			if(errors && errors.length > 0){
+				validationError(errors, next);
+			}
+			next();
+
+}
+
+
+var authenticateAdminToken = function ( request, response,next) {
+			let accessToken = request.get('x-access-token')
+			
+			jwtHandler.verifyAccessToken()
 }
 
 
@@ -38,5 +42,5 @@ next();
 }
 
 module.exports = {
-  validateAddPoint
+	validateAdminLogin
 }

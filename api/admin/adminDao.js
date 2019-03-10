@@ -1,47 +1,51 @@
-const Point = require('./adminModel'),
+const Admin = require('./adminModel'),
     Exception = require('../../lib/api-model/Exception'),
-    randomstring = require('randomstring');
+    randomstring = require('randomstring'),
+    bcryptHandler = require('../../lib/bcrypt'),
+    jwtHandler  =require('../../lib/jwt')
 
 
-function addPoint (pointData) {
-        return Point.create(pointData);
+ function adminLogin (adminData) {
+        return Admin.findOne({username: adminData.username}).then(async (adminEmail) =>{
+
+            if(adminEmail) {
+
+                if(adminEmail.isActive === false)
+                 throw new Exception(1, "The Account is blocked !")
+
+
+
+                 let password  = await bcryptHandler.comparePassword(adminData.password, adminEmail.password)
+
+                 if(password) {
+                      let payload = {
+                            _id: adminEmail._id,
+                            username: adminEmail.username,
+                            role: adminEmail.role
+                      }
+
+                      return jwtHandler.generateAccessToken(payload).then((result) => {
+
+                           return {"username": adminEmail.username, "role": adminEmail.role, "accessToken": result}
+                      })
+                 }
+
+                 else {
+                    throw new Exception(3, "Invalid password")
+                 }
+            }
+
+            else {
+                throw new Exception(2, "Invalid username")
+            }
+
+        })
 }
 
-/**
- * @param {number} latitute user's latitude
- * @param {number} longitude user's longitude
- * @returns Promise
- * @description Provides the nearest point according to user's location provided in latitude and longitude
- */
-function getNearestPoint(latitude, longitude) {
-    let aggPipe = []
-
-    let geoNear = { 
-        near: { type: "Point", coordinates: [ latitude , longitude ] },
-        distanceField: "distance",
-        spherical: true
-    }
-
-    aggPipe.push({'$geoNear' : geoNear})
-
-    let sort = {
-        distance: 1
-    }
-
-    aggPipe.push({'$sort': sort})
 
 
-     return Point.aggregate(aggPipe)
-}
-
-function updatePointLocation(pointData) {
-    let set = { "pointLocation.coordinates": [pointData.latitude, pointData.longitude]}
-    let update = { '$set': set}
-    return Point.findByIdAndUpdate(pointData.pointId,update )
-}
 
 module.exports = {
-    addPoint,
-    getNearestPoint,
-    updatePointLocation
+    adminLogin,
+  
 }

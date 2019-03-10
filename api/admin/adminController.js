@@ -5,13 +5,11 @@ const adminDoa = require('./adminDao.js')
 const socketServer = require('../../lib/socketIO/index')
 
 
-exports.addadmin = (request, response) => {
-    let {} = request.body;
-    
+exports.adminLogin = (request, response) => {
+    let {username, password} = request.body;
 
-
-   adminDoa.addadmin({adminName, adminNumberPlate,adminLocation} ).then((result) => {
-    responseHandler.sendSuccess(response, {responceMessage: "admin Added successfully", adminId: result._id})
+   adminDoa.adminLogin({username, password} ).then((result) => {
+    responseHandler.sendSuccess(response, {responceMessage: "Successfully logged In", accessToken: result.accessToken})
 
 }).catch((error) => {
     responseHandler.sendError(response, error)
