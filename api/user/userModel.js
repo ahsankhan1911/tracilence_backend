@@ -14,7 +14,7 @@ var UserSchema = new Schema({
   email : {type : String, required: true, unique: true},
   phone: { type: String },
   profilePicture: { type: String ,default: '/images/default_user.jpeg'},
-  gender: { type: String, enum: ['male', 'female', 'other'] },
+  // gender: { type: String, enum: ['male', 'female', 'other'] },
   age: { type: Number },
   isActive: {type: Boolean, default: true},
   accessToken: {type: Array , default: []}

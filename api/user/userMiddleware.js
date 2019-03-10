@@ -45,9 +45,9 @@ var validateSignUp = function(request, response, next){
 		errors.push({fieldName:'password', message:"Please enter your password"});
 	}
 
-	if(!genders.find((gen) => gen === gender)){
-		errors.push({fieldName:'gender', message:"Gender can't be other than male,female and other"});
-	}
+	// if(!genders.find((gen) => gen === gender)){
+	// 	errors.push({fieldName:'gender', message:"Gender can't be other than male,female and other"});
+	// }
 	
 	if(errors && errors.length > 0){
 		validationError(errors, next);
