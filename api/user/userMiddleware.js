@@ -14,7 +14,7 @@ const appUtils = require('../../lib/appUtils'),
 			console.log(file)
 			//  let date = new Date()
 			 let extension = file.mimetype.replace('image/', '')
-			 let name = req.body.name.replace(' ', '') + '-' + new Date() + '.' + extension
+			 let name = req.body.name.replace(' ', '') + '-' + new Date().getTime() + '.' + extension
 			// console.log(file.s)
 		  cb(null, name)
 		}
@@ -55,6 +55,25 @@ var validateSignUp = function(request, response, next){
 	next();
 }
 
+var validateProfileEdit = function (request, response, next) {
+	let { name } = request.body;
+	let file = request.file;
+
+	var errors = [];
+	var genders = ['male', 'female', 'other']
+	if (file) {
+		if (_.isEmpty(name)) {
+			errors.push({ fieldName: 'name', message: "Please enter your name" });
+		}
+
+	}
+
+	if (errors && errors.length > 0) {
+		validationError(errors, next);
+	}
+	next();
+}
+
 var authenticateUserAccesstoken = (request, response,next) => {
    let {accessToken} = request.query
    userDao.authenticateUserAccesstoken({accessToken}).then((result) => {
@@ -80,5 +99,6 @@ var validationError = function(errors, next){
 module.exports = {
 	validateSignUp,
 	authenticateUserAccesstoken,
-	uploadUserProfilePicture
+	uploadUserProfilePicture,
+	validateProfileEdit
 }

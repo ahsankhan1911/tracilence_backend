@@ -3,6 +3,7 @@ const appUtils = require('../../lib/appUtils'),
 _ = require('lodash'),
 customException = require('../../lib/customException'),
 constant = require('../../lib/constant'),
+Exception = require('../../lib/api-model/Exception')
 jwtHandler = require('../../lib/jwt');
 
 
@@ -30,7 +31,37 @@ var validateAdminLogin = function (request, response,next) {
 var authenticateAdminToken = function ( request, response,next) {
 			let accessToken = request.get('x-access-token')
 			
-			jwtHandler.verifyAccessToken()
+			if(accessToken) {
+				jwtHandler.verifyAccessToken(accessToken).then((result) => {
+						request.user =  result.payload
+						next()
+					 
+				})
+				.catch((err) => {
+                    switch(err.message) {
+						    case "jwt expired":
+						    response.status(401)
+						    return next(new Exception(2, constant.MESSAGES.UNAUTHORIZED_ACCESS));
+				  
+						    case "invalid token": 
+						    response.status(403)
+							  return	next(new Exception(3, constant.MESSAGES.ACCESS_FORBIDDEN));
+							
+							case "invalid signature": 
+							response.status(403)
+								return	next(new Exception(3, constant.MESSAGES.ACCESS_FORBIDDEN));
+				  
+							default:
+							response.status(400)
+						     return	next( new Exception(4, constant.MESSAGES.SOMETHING_WENT_WRONG));
+					     }
+				})
+			}
+			else {
+				response.status(401)
+				return next( new Exception(1, "No Access Token Provided !") );
+			}
+			
 }
 
 
@@ -42,5 +73,6 @@ next();
 }
 
 module.exports = {
-	validateAdminLogin
+	validateAdminLogin,
+	authenticateAdminToken
 }

@@ -2,11 +2,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// var GeoSchema = new Schema({
-//   _id:false,
-//   type:{type:String, default:'Point'},
-//   coordinates:{type:[Number], index:'2dsphere'}
-// });
 
 var UserSchema = new Schema({
   name: { type: String, required: true },
@@ -17,10 +12,9 @@ var UserSchema = new Schema({
   // gender: { type: String, enum: ['male', 'female', 'other'] },
   age: { type: Number },
   isActive: {type: Boolean, default: true},
-  accessToken: {type: Array , default: []}
-
-  // location : GeoSchema
-
+  isVerified: {type: Boolean, default: false},
+  accessToken: {type: Array , default: []},
+  accountVerificationCode: {type: Number, default: null}
 },{
   versionKey:false,
   timestamps:true
